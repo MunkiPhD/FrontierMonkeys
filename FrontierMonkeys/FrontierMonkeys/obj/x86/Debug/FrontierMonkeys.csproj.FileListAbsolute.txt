@@ -1,0 +1,8 @@
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\FrontierMonkeys.exe
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\FrontierMonkeys.pdb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Debug\FrontierMonkeys.exe
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Debug\FrontierMonkeys.pdb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\player.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\reticle.xnb
