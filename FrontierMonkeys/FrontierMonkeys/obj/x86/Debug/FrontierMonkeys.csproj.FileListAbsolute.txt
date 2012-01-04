@@ -6,3 +6,8 @@ E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Deb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Debug\FrontierMonkeys.pdb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\player.xnb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\reticle.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\background.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\blank.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gradient.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gamefont.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\menufont.xnb

@@ -9,7 +9,7 @@ namespace FrontierMonkeys {
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game game = new Game())
+            using (FrontierMonkeys game = new FrontierMonkeys())
             {
                 game.Run();
             }
@@ -17,4 +17,5 @@ namespace FrontierMonkeys {
     }
 #endif
 }
+
 
