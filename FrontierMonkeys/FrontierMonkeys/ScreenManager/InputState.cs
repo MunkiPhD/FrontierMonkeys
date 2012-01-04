@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace GameStateManagement {
+namespace FrontierMonkeys {
     /// <summary>
     /// Helper for reading input from keyboard, gamepad, and touch input. This class 
     /// tracks both the current and previous state of the input devices, and implements 
@@ -23,9 +23,12 @@ namespace GameStateManagement {
 
         public readonly KeyboardState[] CurrentKeyboardStates;
         public readonly GamePadState[] CurrentGamePadStates;
+        public readonly MouseState[] CurrentMouseStates;
 
         public readonly KeyboardState[] LastKeyboardStates;
         public readonly GamePadState[] LastGamePadStates;
+        public readonly MouseState[] LastMouseStates;
+
 
         public readonly bool[] GamePadWasConnected;
 
@@ -37,9 +40,12 @@ namespace GameStateManagement {
         public InputState() {
             CurrentKeyboardStates = new KeyboardState[MaxInputs];
             CurrentGamePadStates = new GamePadState[MaxInputs];
+            CurrentMouseStates = new MouseState[MaxInputs];
 
             LastKeyboardStates = new KeyboardState[MaxInputs];
             LastGamePadStates = new GamePadState[MaxInputs];
+            LastMouseStates = new MouseState[MaxInputs];
+
 
             GamePadWasConnected = new bool[MaxInputs];
         }
@@ -51,9 +57,11 @@ namespace GameStateManagement {
             for (int i = 0; i < MaxInputs; i++) {
                 LastKeyboardStates[i] = CurrentKeyboardStates[i];
                 LastGamePadStates[i] = CurrentGamePadStates[i];
+                LastMouseStates[i] = CurrentMouseStates[i];
 
                 CurrentKeyboardStates[i] = Keyboard.GetState((PlayerIndex)i);
                 CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
+                CurrentMouseStates[i] = Mouse.GetState();
 
                 // Keep track of whether a gamepad has ever been
                 // connected, so we can detect if it is unplugged.

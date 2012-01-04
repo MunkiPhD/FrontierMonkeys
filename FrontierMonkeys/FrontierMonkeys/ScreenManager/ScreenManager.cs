@@ -19,7 +19,7 @@ using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 #endregion
 
-namespace GameStateManagement
+namespace FrontierMonkeys
 {
     /// <summary>
     /// The screen manager is a component which manages one or more GameScreen

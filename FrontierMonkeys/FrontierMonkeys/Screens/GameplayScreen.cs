@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using GameStateManagement;
+using FrontierMonkeys;
 using FrontierMonkeys.entities;
 using System.Collections.Generic;
 #endregion
@@ -41,7 +41,6 @@ namespace FrontierMonkeys {
         InputAction pauseAction;
 
         //mine
-        SpriteBatch spriteBatch;
         List<Entity> entityList = new List<Entity>();
         Player player;
         InputHandler input;
@@ -82,7 +81,7 @@ namespace FrontierMonkeys {
 
                 //mine
                 input = new InputHandler();
-                player = new Player(ScreenManager.Game, input);
+                player = new Player(ScreenManager.Game); //, input);
                 entityList.Add(player);
 
                 // once the load has finished, we use ResetElapsedTime to tell the game's
@@ -170,6 +169,7 @@ namespace FrontierMonkeys {
 
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
+            MouseState mouseState = input.CurrentMouseStates[playerIndex];
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
@@ -178,35 +178,36 @@ namespace FrontierMonkeys {
             bool gamePadDisconnected = !gamePadState.IsConnected &&
                                        input.GamePadWasConnected[playerIndex];
 
-            PlayerIndex player;
-            if (pauseAction.Evaluate(input, ControllingPlayer, out player) || gamePadDisconnected) {
+            PlayerIndex playerInd;
+            if (pauseAction.Evaluate(input, ControllingPlayer, out playerInd) || gamePadDisconnected) {
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
             } else {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
+                this.player.HandleInput(input);
+                //// Otherwise move the player position.
+                //Vector2 movement = Vector2.Zero;
 
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    movement.X--;
+                //if (keyboardState.IsKeyDown(Keys.Left))
+                //    movement.X--;
 
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    movement.X++;
+                //if (keyboardState.IsKeyDown(Keys.Right))
+                //    movement.X++;
 
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    movement.Y--;
+                //if (keyboardState.IsKeyDown(Keys.Up))
+                //    movement.Y--;
 
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    movement.Y++;
+                //if (keyboardState.IsKeyDown(Keys.Down))
+                //    movement.Y++;
 
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
+                //Vector2 thumbstick = gamePadState.ThumbSticks.Left;
 
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
+                //movement.X += thumbstick.X;
+                //movement.Y -= thumbstick.Y;
 
 
-                if (movement.Length() > 1)
-                    movement.Normalize();
+                //if (movement.Length() > 1)
+                //    movement.Normalize();
 
-                playerPosition += movement * 8f;
+                //playerPosition += movement * 8f;
             }
         }
 
@@ -232,7 +233,7 @@ namespace FrontierMonkeys {
 
             
             //update the inputs before updating the entities
-            input.UpdateStates();
+            //input.UpdateStates();
 
             //draw all the entities
             foreach (Entity item in entityList) {

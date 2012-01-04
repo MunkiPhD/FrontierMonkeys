@@ -8,7 +8,7 @@
 #endregion
 
 using System;
-using GameStateManagement;
+using FrontierMonkeys;
 using Microsoft.Xna.Framework;
 
 namespace FrontierMonkeys {

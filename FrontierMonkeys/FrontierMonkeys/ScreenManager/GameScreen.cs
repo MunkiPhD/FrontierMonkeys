@@ -11,7 +11,7 @@ using System;
 using System.IO;
 using Microsoft.Xna.Framework;
 
-namespace GameStateManagement
+namespace FrontierMonkeys
 {
     /// <summary>
     /// Enum describes the screen transition state.
