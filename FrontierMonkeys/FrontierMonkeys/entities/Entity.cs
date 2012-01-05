@@ -19,7 +19,7 @@ namespace FrontierMonkeys.entities {
             Console.WriteLine("Update not implamented");
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch) {
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             Console.WriteLine("Draw not implamented");
         }
     }

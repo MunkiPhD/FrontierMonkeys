@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using FrontierMonkeys;
 using FrontierMonkeys.entities;
 using System.Collections.Generic;
+using FrontierMonkeys.Levels;
 #endregion
 
 namespace FrontierMonkeys {
@@ -43,8 +44,16 @@ namespace FrontierMonkeys {
         //mine
         List<Entity> entityList = new List<Entity>();
         Player player;
-        InputHandler input;
-        
+        InputState input;
+
+        int _levelIndex = -1;
+        int _numberOfLevels = 1;
+        Level _level;
+
+        KeyboardState _keyboardState;
+        GamePadState _gamePadState;
+        MouseState _mouseState;
+
         #endregion
 
         #region Initialization
@@ -80,7 +89,7 @@ namespace FrontierMonkeys {
                 //Thread.Sleep(1000);
 
                 //mine
-                input = new InputHandler();
+                //input = new InputHandler();
                 player = new Player(ScreenManager.Game); //, input);
                 entityList.Add(player);
 
@@ -88,8 +97,25 @@ namespace FrontierMonkeys {
                 // timing mechanism that we have just finished a very long frame, and that
                 // it should not try to catch up.
                 ScreenManager.Game.ResetElapsedTime();
+
+                LoadNextLevel();
             }
 
+        }
+
+
+        private void LoadNextLevel() {
+            // move to the next level
+            _levelIndex = (_levelIndex + 1) % _numberOfLevels;
+
+            // Unloads the content for the current level before loading the next one.
+            if (_level != null)
+                _level.Dispose();
+
+            // Load the level.
+            string levelPath = string.Format("Content/Levels/{0}.txt", _levelIndex);
+            //using (Stream fileStream = TitleContainer.OpenStream(levelPath))
+            _level = new Level(ScreenManager.Game.Services, _levelIndex, this.player);
         }
 
 
@@ -136,7 +162,7 @@ namespace FrontierMonkeys {
                 //remove all the entities that are not active
                 entityList.RemoveAll(x => x.isActive == false);
 
-
+                _level.Update(gameTime, this._keyboardState, this._gamePadState, this._mouseState, DisplayOrientation.Default);
                 //// Apply some random jitter to make the enemy move around.
                 //const float randomization = 10;
 
@@ -167,22 +193,26 @@ namespace FrontierMonkeys {
             // Look up inputs for the active player profile.
             int playerIndex = (int)ControllingPlayer.Value;
 
-            KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
-            GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
-            MouseState mouseState = input.CurrentMouseStates[playerIndex];
+            _keyboardState = input.CurrentKeyboardStates[playerIndex];
+            _gamePadState = input.CurrentGamePadStates[playerIndex];
+            _mouseState = input.CurrentMouseStates[playerIndex];
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
             // on PC if they are playing with a keyboard and have no gamepad at all!
-            bool gamePadDisconnected = !gamePadState.IsConnected &&
+            bool gamePadDisconnected = !_gamePadState.IsConnected &&
                                        input.GamePadWasConnected[playerIndex];
 
             PlayerIndex playerInd;
             if (pauseAction.Evaluate(input, ControllingPlayer, out playerInd) || gamePadDisconnected) {
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
             } else {
-                this.player.HandleInput(input);
+                //this.player.HandleInput(input);
+
+
+
+
                 //// Otherwise move the player position.
                 //Vector2 movement = Vector2.Zero;
 
@@ -223,7 +253,7 @@ namespace FrontierMonkeys {
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            
 
             //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 
@@ -231,19 +261,20 @@ namespace FrontierMonkeys {
             //                       enemyPosition, Color.DarkRed);
 
 
-            
+            _level.Draw(gameTime, spriteBatch);
             //update the inputs before updating the entities
             //input.UpdateStates();
 
             //draw all the entities
             foreach (Entity item in entityList) {
-                item.Draw(spriteBatch);
+                spriteBatch.Begin();
+                item.Draw(gameTime, spriteBatch);
+                spriteBatch.End();
             }
 
 
 
             //end the spritebatch rendering
-            spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0) {

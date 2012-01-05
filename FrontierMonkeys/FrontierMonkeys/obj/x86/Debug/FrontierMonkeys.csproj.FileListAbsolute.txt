@@ -11,3 +11,4 @@ E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Deb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gradient.xnb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gamefont.xnb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\menufont.xnb
+E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\Backgrounds\Layer0.xnb

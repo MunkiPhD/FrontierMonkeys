@@ -30,21 +30,23 @@ namespace FrontierMonkeys.entities {
             this.Position = playerPosition;
             this.PlayerTexture = game.Content.Load<Texture2D>("player");
             _reticle = game.Content.Load<Texture2D>("reticle");
-            this.speed = 11f;
-            this.PlayerIndex = 1;
+            this.speed = 15f;
+            this.PlayerIndex = 0;
         }
 
 
 
-        public void HandleInput(InputState input) {
+        public void HandleInput(KeyboardState keyboardState,
+            GamePadState gamePadState, 
+            MouseState mouseState) {
             this.LastPosition = this.Position;
 
 
-            KeyboardState keyboardState = input.CurrentKeyboardStates[this.PlayerIndex];
-            GamePadState gamePadState = input.CurrentGamePadStates[this.PlayerIndex];
-            MouseState mouseState = input.CurrentMouseStates[this.PlayerIndex];
+            //KeyboardState keyboardState = input.CurrentKeyboardStates[this.PlayerIndex];
+            //GamePadState gamePadState = input.CurrentGamePadStates[this.PlayerIndex];
+            //MouseState mouseState = input.CurrentMouseStates[this.PlayerIndex];
 
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) || gamePadState.DPad.Left == ButtonState.Pressed) {
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) ) {
                 Position.X -= speed;
             }
 
@@ -58,6 +60,15 @@ namespace FrontierMonkeys.entities {
                 Position.Y += speed;
             }
 
+
+            var leftStick = gamePadState.ThumbSticks.Left;
+            if (leftStick.Length() != 0.0f) {
+                leftStick.Normalize();
+                Position.X += leftStick.X * speed;
+                Position.Y -= leftStick.Y * speed;
+            }
+            
+
             _mousePosition.X = mouseState.X;
             _mousePosition.Y = mouseState.Y;
             //this.Position.X = input.CurrentMouseState.X;
@@ -68,11 +79,17 @@ namespace FrontierMonkeys.entities {
             Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
         }
 
+
+        
         /// <summary>
         /// Updates the player's actions and actions upon
         /// </summary>
         /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime) {
+        public void Update(GameTime gameTime,
+             KeyboardState keyboardState,
+            GamePadState gamePadState, 
+            MouseState mouseState) {
+            HandleInput(keyboardState, gamePadState, mouseState);
            // this.LastPosition = this.Position;
 
 
@@ -100,7 +117,7 @@ namespace FrontierMonkeys.entities {
            // Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             spriteBatch.Draw(PlayerTexture, Position, Color.White);
             spriteBatch.Draw(_reticle, _mousePosition, Color.White);
         }
