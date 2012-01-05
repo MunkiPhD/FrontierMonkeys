@@ -88,6 +88,9 @@ namespace FrontierMonkeys.Levels {
             }
         }
 
+        public void HandleInput(InputState input) {
+            player.HandleInput(input.CurrentKeyboardState, input.CurrentGamePadState, input.CurrentMouseState);
+        }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             spriteBatch.Begin();

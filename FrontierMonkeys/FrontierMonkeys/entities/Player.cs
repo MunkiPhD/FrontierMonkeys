@@ -20,6 +20,10 @@ namespace FrontierMonkeys.entities {
         private Vector2 _mousePosition;
         private Texture2D _reticle;
         public int PlayerIndex;
+        private float _rotationAngle;
+        private Vector2 _playerOrigin;
+        private Vector2 _reticleOrigin;
+        private bool _drawReticle = false;
 
         public Player(Game game)//, InputHandler input)
             : base() {
@@ -29,97 +33,160 @@ namespace FrontierMonkeys.entities {
             Vector2 playerPosition = new Vector2(game.GraphicsDevice.Viewport.TitleSafeArea.X, game.GraphicsDevice.Viewport.TitleSafeArea.Y + game.GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             this.Position = playerPosition;
             this.PlayerTexture = game.Content.Load<Texture2D>("player");
-            _reticle = game.Content.Load<Texture2D>("reticle");
+            _reticle = game.Content.Load<Texture2D>("cursor");
             this.speed = 15f;
             this.PlayerIndex = 0;
+
+            _playerOrigin = new Vector2(PlayerTexture.Width / 2, PlayerTexture.Height / 2);
+            _reticleOrigin = new Vector2(_reticle.Width / 2, _reticle.Height / 2);
+        }
+
+
+        /// <summary>
+        /// Handles the input for the player that is received from the player
+        /// </summary>
+        /// <param name="keyboardState"></param>
+        /// <param name="gamePadState"></param>
+        /// <param name="mouseState"></param>
+        public void HandleInput(KeyboardState keyboardState, GamePadState gamePadState, MouseState mouseState) {
+            this.LastPosition = this.Position;
+            this._drawReticle = !gamePadState.IsConnected; //determine whether to draw the reticle by whether a gamepad is plugged in or not
+
+
+            // if a gamepad is not connected, use the mouse. otherwise, read the input from the gamepad
+            if (_drawReticle) {
+                HandleKeyboardInput(keyboardState);
+                HandleMouseInput(mouseState);
+                
+            } else {
+                HandleGamepadInput(gamePadState);
+            }
+
+            // certify that the user is within bounds
+            Position.X = MathHelper.Clamp(Position.X, _playerOrigin.X, game.GraphicsDevice.Viewport.Width - _playerOrigin.X);
+            Position.Y = MathHelper.Clamp(Position.Y, _playerOrigin.Y,  game.GraphicsDevice.Viewport.Height - _playerOrigin.Y);
         }
 
 
 
-        public void HandleInput(KeyboardState keyboardState,
-            GamePadState gamePadState, 
-            MouseState mouseState) {
-            this.LastPosition = this.Position;
+        /// <summary>
+        /// Handles the mouse input
+        /// </summary>
+        /// <param name="mouseState">The mouse input state</param>
+        private void HandleMouseInput(MouseState mouseState) {
+            _mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            float xDistance = _mousePosition.X - (Position.X);// + (PlayerTexture.Width / 2));
+            float yDistance = _mousePosition.Y - (Position.Y);// - (PlayerTexture.Height / 2));
+            _rotationAngle = (float)Math.PI / 2 + (float)Math.Atan2(yDistance, xDistance);
+        }
 
 
-            //KeyboardState keyboardState = input.CurrentKeyboardStates[this.PlayerIndex];
-            //GamePadState gamePadState = input.CurrentGamePadStates[this.PlayerIndex];
-            //MouseState mouseState = input.CurrentMouseStates[this.PlayerIndex];
 
-            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) ) {
+        /// <summary>
+        /// Handles the input from the keyboard
+        /// </summary>
+        /// <param name="keyboardState"></param>
+        private void HandleKeyboardInput(KeyboardState keyboardState) {
+            if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A)) {
                 Position.X -= speed;
             }
 
-            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D) || gamePadState.DPad.Right == ButtonState.Pressed) {
+            if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D)) {
                 Position.X += speed;
             }
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || gamePadState.DPad.Up == ButtonState.Pressed) {
+
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W)) {
                 Position.Y -= speed;
             }
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S) || gamePadState.DPad.Down == ButtonState.Pressed) {
+
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S)) {
+                Position.Y += speed;
+            }
+        }
+
+        /// <summary>
+        /// Handles the gamepad state input 
+        /// </summary>
+        /// <param name="gamePadState">The GamePadState that contains the input information</param>
+        private void HandleGamepadInput(GamePadState gamePadState) {
+            // look at the DPad
+            if (gamePadState.DPad.Left == ButtonState.Pressed) ) {
+                Position.X -= speed;
+            }
+
+            if (gamePadState.DPad.Right == ButtonState.Pressed) {
+                Position.X += speed;
+            }
+
+            if (gamePadState.DPad.Up == ButtonState.Pressed ) {
+                Position.Y -= speed;
+            }
+
+            if (gamePadState.DPad.Down == ButtonState.Pressed) {
                 Position.Y += speed;
             }
 
-
+            // look at the left stick
             var leftStick = gamePadState.ThumbSticks.Left;
             if (leftStick.Length() != 0.0f) {
                 leftStick.Normalize();
                 Position.X += leftStick.X * speed;
                 Position.Y -= leftStick.Y * speed;
             }
-            
 
-            _mousePosition.X = mouseState.X;
-            _mousePosition.Y = mouseState.Y;
-            //this.Position.X = input.CurrentMouseState.X;
-            //this.Position.Y = input.CurrentMouseState.Y;
-
-            //certify that the user is within bounds
-            Position.X = MathHelper.Clamp(Position.X, 0, game.GraphicsDevice.Viewport.Width - Width);
-            Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
+            // look at the right stick and get the rotation angle
+            var rightStick = gamePadState.ThumbSticks.Right;
+            if (rightStick.Length() != 0.0f)
+                _rotationAngle = (float)Math.Atan2(rightStick.X, rightStick.Y);
         }
 
 
-        
+
         /// <summary>
         /// Updates the player's actions and actions upon
         /// </summary>
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime,
              KeyboardState keyboardState,
-            GamePadState gamePadState, 
+            GamePadState gamePadState,
             MouseState mouseState) {
-            HandleInput(keyboardState, gamePadState, mouseState);
-           // this.LastPosition = this.Position;
+
+            // HandleInput(keyboardState, gamePadState, mouseState);
 
 
-           // if (input.CurrentKeyboardState.IsKeyDown(Keys.Left) || input.CurrentKeyboardState.IsKeyDown(Keys.A) || input.CurrentGamePadState.DPad.Left == ButtonState.Pressed) {
-           //    Position.X -= speed;
-           // }
+            // this.LastPosition = this.Position;
 
-           // if (input.CurrentKeyboardState.IsKeyDown(Keys.Right) || input.CurrentKeyboardState.IsKeyDown(Keys.D) || input.CurrentGamePadState.DPad.Right == ButtonState.Pressed) {
-           //    Position.X += speed;
-           // }
-           // if (input.CurrentKeyboardState.IsKeyDown(Keys.Up) || input.CurrentKeyboardState.IsKeyDown(Keys.W) || input.CurrentGamePadState.DPad.Up == ButtonState.Pressed) {
-           //     Position.Y -= speed;
-           // }
-           // if (input.CurrentKeyboardState.IsKeyDown(Keys.Down) || input.CurrentKeyboardState.IsKeyDown(Keys.S) || input.CurrentGamePadState.DPad.Down == ButtonState.Pressed) {
-           //     Position.Y += speed;
-           // }
 
-           // _mousePosition.X = input.CurrentMouseState.X;
-           // _mousePosition.Y = input.CurrentMouseState.Y;
-           ////this.Position.X = input.CurrentMouseState.X;
-           ////this.Position.Y = input.CurrentMouseState.Y;
+            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Left) || input.CurrentKeyboardState.IsKeyDown(Keys.A) || input.CurrentGamePadState.DPad.Left == ButtonState.Pressed) {
+            //    Position.X -= speed;
+            // }
 
-           // //certify that the user is within bounds
-           // Position.X = MathHelper.Clamp(Position.X, 0, game.GraphicsDevice.Viewport.Width - Width);
-           // Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
+            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Right) || input.CurrentKeyboardState.IsKeyDown(Keys.D) || input.CurrentGamePadState.DPad.Right == ButtonState.Pressed) {
+            //    Position.X += speed;
+            // }
+            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Up) || input.CurrentKeyboardState.IsKeyDown(Keys.W) || input.CurrentGamePadState.DPad.Up == ButtonState.Pressed) {
+            //     Position.Y -= speed;
+            // }
+            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Down) || input.CurrentKeyboardState.IsKeyDown(Keys.S) || input.CurrentGamePadState.DPad.Down == ButtonState.Pressed) {
+            //     Position.Y += speed;
+            // }
+
+            // _mousePosition.X = input.CurrentMouseState.X;
+            // _mousePosition.Y = input.CurrentMouseState.Y;
+            ////this.Position.X = input.CurrentMouseState.X;
+            ////this.Position.Y = input.CurrentMouseState.Y;
+
+            // //certify that the user is within bounds
+            // Position.X = MathHelper.Clamp(Position.X, 0, game.GraphicsDevice.Viewport.Width - Width);
+            // Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
-            spriteBatch.Draw(PlayerTexture, Position, Color.White);
-            spriteBatch.Draw(_reticle, _mousePosition, Color.White);
+            //spriteBatch.Draw(PlayerTexture, Position, Color.White);
+            spriteBatch.Draw(PlayerTexture, Position, null, Color.White, _rotationAngle, _playerOrigin, 1.0f, SpriteEffects.None, 0);
+
+            if (_drawReticle)
+                spriteBatch.Draw(_reticle, _mousePosition, null, Color.White, 0, _reticleOrigin, 1.0f, SpriteEffects.None, 0);
         }
     }
 }

@@ -193,16 +193,16 @@ namespace FrontierMonkeys {
             // Look up inputs for the active player profile.
             int playerIndex = (int)ControllingPlayer.Value;
 
-            _keyboardState = input.CurrentKeyboardStates[playerIndex];
-            _gamePadState = input.CurrentGamePadStates[playerIndex];
-            _mouseState = input.CurrentMouseStates[playerIndex];
+            _keyboardState = input.CurrentKeyboardState;
+            _gamePadState = input.CurrentGamePadState;
+            _mouseState = input.CurrentMouseState;
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
             // whether a gamepad was ever plugged in, because we don't want to pause
             // on PC if they are playing with a keyboard and have no gamepad at all!
             bool gamePadDisconnected = !_gamePadState.IsConnected &&
-                                       input.GamePadWasConnected[playerIndex];
+                                       input.GamePadWasConnected;
 
             PlayerIndex playerInd;
             if (pauseAction.Evaluate(input, ControllingPlayer, out playerInd) || gamePadDisconnected) {
@@ -211,7 +211,7 @@ namespace FrontierMonkeys {
                 //this.player.HandleInput(input);
 
 
-
+                _level.HandleInput(input);
 
                 //// Otherwise move the player position.
                 //Vector2 movement = Vector2.Zero;

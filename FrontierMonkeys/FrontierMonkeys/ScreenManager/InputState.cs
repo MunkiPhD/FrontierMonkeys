@@ -21,54 +21,58 @@ namespace FrontierMonkeys {
     public class InputState {
         public const int MaxInputs = 4;
 
-        public readonly KeyboardState[] CurrentKeyboardStates;
-        public readonly GamePadState[] CurrentGamePadStates;
-        public readonly MouseState[] CurrentMouseStates;
+        public  KeyboardState CurrentKeyboardState;
+        public  GamePadState CurrentGamePadState;
+        public  MouseState CurrentMouseState;
 
-        public readonly KeyboardState[] LastKeyboardStates;
-        public readonly GamePadState[] LastGamePadStates;
-        public readonly MouseState[] LastMouseStates;
+        public  KeyboardState LastKeyboardState;
+        public  GamePadState LastGamePadState;
+        public  MouseState LastMouseState;
 
 
-        public readonly bool[] GamePadWasConnected;
-
+        private bool _gamePadWasConnected;
+        public bool GamePadWasConnected { get {
+            return _gamePadWasConnected;
+        } }
 
 
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
         public InputState() {
-            CurrentKeyboardStates = new KeyboardState[MaxInputs];
-            CurrentGamePadStates = new GamePadState[MaxInputs];
-            CurrentMouseStates = new MouseState[MaxInputs];
+            CurrentKeyboardState = new KeyboardState();
+            CurrentGamePadState = new GamePadState();
+            CurrentMouseState = new MouseState();
 
-            LastKeyboardStates = new KeyboardState[MaxInputs];
-            LastGamePadStates = new GamePadState[MaxInputs];
-            LastMouseStates = new MouseState[MaxInputs];
+            LastKeyboardState = new KeyboardState();
+            LastGamePadState = new GamePadState();
+            LastMouseState = new MouseState();
 
 
-            GamePadWasConnected = new bool[MaxInputs];
+            //GamePadWasConnected = new bool();
         }
 
         /// <summary>
         /// Reads the latest state user input.
         /// </summary>
         public void Update() {
-            for (int i = 0; i < MaxInputs; i++) {
-                LastKeyboardStates[i] = CurrentKeyboardStates[i];
-                LastGamePadStates[i] = CurrentGamePadStates[i];
-                LastMouseStates[i] = CurrentMouseStates[i];
+            //for (int i = 0; i < MaxInputs; i++) {
+            LastKeyboardState = CurrentKeyboardState;
+            LastGamePadState = CurrentGamePadState;
+                LastMouseState = CurrentMouseState;
 
-                CurrentKeyboardStates[i] = Keyboard.GetState((PlayerIndex)i);
-                CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-                CurrentMouseStates[i] = Mouse.GetState();
+                CurrentKeyboardState = Keyboard.GetState();
+                CurrentGamePadState= GamePad.GetState(0, GamePadDeadZone.Circular);
+                CurrentMouseState = Mouse.GetState();
 
                 // Keep track of whether a gamepad has ever been
                 // connected, so we can detect if it is unplugged.
-                if (CurrentGamePadStates[i].IsConnected) {
-                    GamePadWasConnected[i] = true;
-                }
-            }
+                //if (CurrentGamePadStates[i].IsConnected) {
+                //    GamePadWasConnected[i] = true;
+                //}
+                if (CurrentGamePadState.IsConnected)
+                    _gamePadWasConnected = true;
+            //}
 
         }
 
@@ -86,13 +90,14 @@ namespace FrontierMonkeys {
 
                 int i = (int)playerIndex;
 
-                return CurrentKeyboardStates[i].IsKeyDown(key);
+                return CurrentKeyboardState.IsKeyDown(key);
             } else {
                 // Accept input from any player.
-                return (IsKeyPressed(key, PlayerIndex.One, out playerIndex) ||
-                        IsKeyPressed(key, PlayerIndex.Two, out playerIndex) ||
-                        IsKeyPressed(key, PlayerIndex.Three, out playerIndex) ||
-                        IsKeyPressed(key, PlayerIndex.Four, out playerIndex));
+                //return (IsKeyPressed(key, PlayerIndex.One, out playerIndex) ||
+                //        IsKeyPressed(key, PlayerIndex.Two, out playerIndex) ||
+                //        IsKeyPressed(key, PlayerIndex.Three, out playerIndex) ||
+                //        IsKeyPressed(key, PlayerIndex.Four, out playerIndex));
+                return (IsKeyPressed(key, PlayerIndex.One, out playerIndex));
             }
         }
 
@@ -110,13 +115,14 @@ namespace FrontierMonkeys {
 
                 int i = (int)playerIndex;
 
-                return CurrentGamePadStates[i].IsButtonDown(button);
+                return CurrentGamePadState.IsButtonDown(button);
             } else {
                 // Accept input from any player.
-                return (IsButtonPressed(button, PlayerIndex.One, out playerIndex) ||
-                        IsButtonPressed(button, PlayerIndex.Two, out playerIndex) ||
-                        IsButtonPressed(button, PlayerIndex.Three, out playerIndex) ||
-                        IsButtonPressed(button, PlayerIndex.Four, out playerIndex));
+                //return (IsButtonPressed(button, PlayerIndex.One, out playerIndex) ||
+                //        IsButtonPressed(button, PlayerIndex.Two, out playerIndex) ||
+                //        IsButtonPressed(button, PlayerIndex.Three, out playerIndex) ||
+                //        IsButtonPressed(button, PlayerIndex.Four, out playerIndex));
+                return (IsButtonPressed(button, PlayerIndex.One, out playerIndex) );
             }
         }
 
@@ -134,14 +140,15 @@ namespace FrontierMonkeys {
 
                 int i = (int)playerIndex;
 
-                return (CurrentKeyboardStates[i].IsKeyDown(key) &&
-                        LastKeyboardStates[i].IsKeyUp(key));
+                return (CurrentKeyboardState.IsKeyDown(key) &&
+                        LastKeyboardState.IsKeyUp(key));
             } else {
                 // Accept input from any player.
-                return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Three, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Four, out playerIndex));
+                //return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) ||
+                //        IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
+                //        IsNewKeyPress(key, PlayerIndex.Three, out playerIndex) ||
+                //        IsNewKeyPress(key, PlayerIndex.Four, out playerIndex));
+                return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) );
             }
         }
 
@@ -159,14 +166,15 @@ namespace FrontierMonkeys {
 
                 int i = (int)playerIndex;
 
-                return (CurrentGamePadStates[i].IsButtonDown(button) &&
-                        LastGamePadStates[i].IsButtonUp(button));
+                return (CurrentGamePadState.IsButtonDown(button) &&
+                        LastGamePadState.IsButtonUp(button));
             } else {
                 // Accept input from any player.
-                return (IsNewButtonPress(button, PlayerIndex.One, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Two, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Three, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Four, out playerIndex));
+                //return (IsNewButtonPress(button, PlayerIndex.One, out playerIndex) ||
+                //        IsNewButtonPress(button, PlayerIndex.Two, out playerIndex) ||
+                //        IsNewButtonPress(button, PlayerIndex.Three, out playerIndex) ||
+                //        IsNewButtonPress(button, PlayerIndex.Four, out playerIndex));
+                return (IsNewButtonPress(button, PlayerIndex.One, out playerIndex) );
             }
         }
     }

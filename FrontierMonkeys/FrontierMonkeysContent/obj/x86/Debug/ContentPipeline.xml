@@ -7,8 +7,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\player.xnb</Output>
-      <Time>2011-12-28T20:34:58.2143769-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\player.xnb</Output>
+      <Time>2011-12-29T10:03:08.3961451-05:00</Time>
     </Item>
     <Item>
       <Source>reticle.png</Source>
@@ -16,8 +16,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\reticle.xnb</Output>
-      <Time>2011-12-28T22:02:13.6748281-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\reticle.xnb</Output>
+      <Time>2011-12-29T10:03:08.3971452-05:00</Time>
     </Item>
     <Item>
       <Source>background.png</Source>
@@ -25,8 +25,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\background.xnb</Output>
-      <Time>2012-01-04T01:06:40.503249-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\background.xnb</Output>
+      <Time>2012-01-05T07:46:36.895555-05:00</Time>
     </Item>
     <Item>
       <Source>blank.png</Source>
@@ -34,8 +34,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\blank.xnb</Output>
-      <Time>2012-01-04T01:06:40.5042491-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\blank.xnb</Output>
+      <Time>2012-01-05T07:46:36.895555-05:00</Time>
     </Item>
     <Item>
       <Source>gradient.png</Source>
@@ -43,8 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gradient.xnb</Output>
-      <Time>2012-01-04T01:06:40.5052491-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gradient.xnb</Output>
+      <Time>2012-01-05T07:46:36.911155-05:00</Time>
     </Item>
     <Item>
       <Source>Backgrounds\Layer0.png</Source>
@@ -52,8 +52,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\Backgrounds\Layer0.xnb</Output>
-      <Time>2012-01-02T11:56:07.2701644-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\Backgrounds\Layer0.xnb</Output>
+      <Time>2012-01-05T07:46:36.895555-05:00</Time>
     </Item>
     <Item>
       <Source>gamefont.spritefont</Source>
@@ -61,8 +61,8 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gamefont.xnb</Output>
-      <Time>2012-01-04T01:06:40.5042491-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\gamefont.xnb</Output>
+      <Time>2012-01-05T07:46:36.911155-05:00</Time>
     </Item>
     <Item>
       <Source>menufont.spritefont</Source>
@@ -70,8 +70,17 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\menufont.xnb</Output>
-      <Time>2012-01-04T01:06:40.5052491-05:00</Time>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\menufont.xnb</Output>
+      <Time>2012-01-05T07:46:36.911155-05:00</Time>
+    </Item>
+    <Item>
+      <Source>cursor.png</Source>
+      <Name>cursor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\cursor.xnb</Output>
+      <Time>2012-01-05T08:59:29.2684939-05:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -79,10 +88,10 @@
       <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\</RootDirectory>
-      <LoggerRootDirectory>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\</LoggerRootDirectory>
-      <IntermediateDirectory>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
@@ -111,7 +120,7 @@
       </Assembly>
       <Assembly>
         <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
-        <Value>2011-11-24T10:25:13.6804899-05:00</Value>
+        <Value>2011-12-29T10:10:19.6738128-05:00</Value>
       </Assembly>
     </Assemblies>
   </Asset>

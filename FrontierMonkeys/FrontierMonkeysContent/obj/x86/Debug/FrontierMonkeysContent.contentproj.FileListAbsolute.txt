@@ -1,1 +1,2 @@
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeysContent\obj\x86\Debug\ResolveAssemblyReference.cache

@@ -6,3 +6,4 @@ Content\gradient.xnb
 Content\Backgrounds\Layer0.xnb
 Content\gamefont.xnb
 Content\menufont.xnb
+Content\cursor.xnb
