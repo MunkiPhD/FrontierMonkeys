@@ -29,3 +29,4 @@ C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\obj\x86\Deb
 C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\cursor.xnb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\cursor.xnb
 E:\development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\shot.xnb
+C:\Development\games\FrontierMonkeys\FrontierMonkeys\FrontierMonkeys\bin\x86\Debug\Content\shot.xnb

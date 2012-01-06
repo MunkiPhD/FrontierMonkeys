@@ -22,6 +22,8 @@ namespace FrontierMonkeys {
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         ScreenFactory screenFactory;
+        private int _height =  720;
+        private int _width = 1280;
 
         /// <summary>
         /// The main game constructor.
@@ -31,6 +33,9 @@ namespace FrontierMonkeys {
 
             graphics = new GraphicsDeviceManager(this);
             TargetElapsedTime = TimeSpan.FromTicks(333333);
+
+            graphics.PreferredBackBufferHeight = _height;
+            graphics.PreferredBackBufferWidth = _width;
 
 
             // Create the screen factory and add it to the Services

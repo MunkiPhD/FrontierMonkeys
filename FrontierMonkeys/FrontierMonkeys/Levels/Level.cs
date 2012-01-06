@@ -12,6 +12,7 @@ namespace FrontierMonkeys.Levels {
     class Level : IDisposable {
         private Layer[] _layers;
         private const int ENTITY_LAYERS  = 1;
+        private IServiceProvider _services;
         // Entities in the level.
         public Player Player {
             get { return player; }
@@ -27,10 +28,12 @@ namespace FrontierMonkeys.Levels {
         public Level(IServiceProvider serviceProvider, int levelIndex, Player thePlayer) {
             // create the content manager
             this.content = new ContentManager(serviceProvider, "Content");
-
+            _services = serviceProvider;
+            
             // load the layers for now
+            IGraphicsDeviceService gService = (IGraphicsDeviceService) _services.GetService(typeof(IGraphicsDeviceService));
             _layers = new Layer[1];
-            _layers[0] = new Layer(content, "Backgrounds/Layer0");
+            _layers[0] = new Layer(content, "Backgrounds/Layer0", gService.GraphicsDevice.Viewport);
             // _layers[1] = new Layer(content, "Backgrounds/Layer1");
             // _layers[2] = new Layer(content, "Backgrounds/Layer2");
             this.player = thePlayer;
@@ -53,6 +56,7 @@ namespace FrontierMonkeys.Levels {
            DisplayOrientation orientation) {
             // Pause while the player is dead or time is expired.
             if (!Player.isActive) {
+                
                 // Still want to perform physics on the player.
                 //Player.ApplyPhysics(gameTime);
                 //} else if (ReachedExit) {
@@ -62,7 +66,13 @@ namespace FrontierMonkeys.Levels {
                 //    timeRemaining -= TimeSpan.FromSeconds(seconds);
                 //    score += seconds * PointsPerSecond;
             } else {
-                Player.Update(gameTime,keyboardState, gamePadState, mouseState);
+                Player.Update(gameTime);//,keyboardState, gamePadState, mouseState);
+
+                //update the layers (for parallaxing)
+                for (int i = 0; i < _layers.Length; i++) {
+                    _layers[i].Update(gameTime);
+                }
+                
                 //UpdateMovableTiles(gameTime);
                 //UpdateGems(gameTime);
 

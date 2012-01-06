@@ -15,6 +15,8 @@ namespace FrontierMonkeys.entities {
         public int width { get { return texture.Width; } }
         public int height { get { return texture.Height; } }
         public float rotation;
+        public Vector2 direction;
+        private Vector2 _bulletSpeed;
 
         public Projectile(Viewport viewPort, Texture2D texture, Vector2 position, float rotation) {
             this.texture = texture;
@@ -25,6 +27,11 @@ namespace FrontierMonkeys.entities {
             this.speed = 10f;
             this.damage = 5;
             this.rotation = rotation;
+
+            var xSpeed = Math.Cos(Math.PI / 2 + rotation) * speed;
+            var ySpeed = Math.Sin(Math.PI / 2 + rotation) * speed;
+            _bulletSpeed = new Vector2((float)xSpeed, (float)ySpeed);
+
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch) {
@@ -34,8 +41,9 @@ namespace FrontierMonkeys.entities {
         public override void Update(Microsoft.Xna.Framework.GameTime gameTime) {
             //Matrix rotationMatrix = Matrix.CreateRotationZ(rotation);
             //Position = Vector2.Transform(new Vector2(0,-1), rotationMatrix);
-            Position.X += (float)Math.Tan(rotation) + speed;
-            Position.Y -= (float)Math.Sin(rotation) + speed;
+
+            Position.X -= _bulletSpeed.X;// (float)Math.Tan(rotation) + speed;
+            Position.Y -= _bulletSpeed.Y; // (float)Math.Sin(rotation) + speed;
            // Position = new Vector2((float)Math.Cos(rotation) * speed, (float)Math.Sin(rotation) * speed);
             //Position.X += (float)Math.Sinh(rotation) * speed;
             //Position.Y += (float)Math.Cosh(rotation) * speed;

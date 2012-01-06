@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using FrontierMonkeys;
+using FrontierMonkeys.Screens;
 
 namespace FrontierMonkeys.entities {
     class Player : Entity {
@@ -82,7 +83,7 @@ namespace FrontierMonkeys.entities {
             _rotationAngle = (float)Math.PI / 2 + (float)Math.Atan2(yDistance, xDistance);
 
             if (mouseState.LeftButton == ButtonState.Pressed) {
-                _projectiles.Add(new Projectile(game.GraphicsDevice.Viewport, game.Content.Load<Texture2D>("shot"), Position, _rotationAngle));
+                AddProjectile();
             }
         }
 
@@ -107,6 +108,11 @@ namespace FrontierMonkeys.entities {
 
             if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S)) {
                 Position.Y += speed;
+            }
+
+            // check if shot fired
+            if (keyboardState.IsKeyDown(Keys.Space)) {
+                AddProjectile();
             }
         }
 
@@ -146,20 +152,30 @@ namespace FrontierMonkeys.entities {
                 _rotationAngle = (float)Math.Atan2(rightStick.X, rightStick.Y);
 
             if (gamePadState.IsButtonDown(Buttons.RightTrigger)) {
-                _projectiles.Add(new Projectile(game.GraphicsDevice.Viewport, game.Content.Load<Texture2D>("shot"), Position, _rotationAngle));
+                AddProjectile();
             }
         }
 
 
+        /// <summary>
+        /// Adds a bullet to the game shot from the user
+        /// </summary>
+        private void AddProjectile() {
+            Vector2 shotPosition = Position;
+            shotPosition.Y += Height;
+            _projectiles.Add(new Projectile(game.GraphicsDevice.Viewport, game.Content.Load<Texture2D>("shot"), Position, _rotationAngle));
+
+        }
 
         /// <summary>
         /// Updates the player's actions and actions upon
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Update(GameTime gameTime,
-             KeyboardState keyboardState,
-            GamePadState gamePadState,
-            MouseState mouseState) {
+        public override void Update(GameTime gameTime) {
+            //,
+            // KeyboardState keyboardState,
+            //GamePadState gamePadState,
+            //MouseState mouseState
 
             _projectiles.RemoveAll(x => x.isActive == false);
             foreach (Projectile projectile in _projectiles) {
@@ -169,7 +185,6 @@ namespace FrontierMonkeys.entities {
 
         public override void Draw(SpriteBatch spriteBatch) {
             //spriteBatch.Draw(PlayerTexture, Position, Color.White);
-            spriteBatch.Draw(PlayerTexture, Position, null, Color.White, _rotationAngle, _playerOrigin, 1.0f, SpriteEffects.None, 0);
 
             if (_drawReticle)
                 spriteBatch.Draw(_reticle, _mousePosition, null, Color.White, 0, _reticleOrigin, 1.0f, SpriteEffects.None, 0);
@@ -177,6 +192,9 @@ namespace FrontierMonkeys.entities {
             foreach (Projectile projectile in _projectiles) {
                 projectile.Draw(spriteBatch);
             }
+
+            //draw the ship last so that the bullets come from underneath it
+            spriteBatch.Draw(PlayerTexture, Position, null, Color.White, _rotationAngle, _playerOrigin, 1.0f, SpriteEffects.None, 0);
         }
     }
 }
