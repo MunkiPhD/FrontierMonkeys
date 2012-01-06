@@ -24,6 +24,7 @@ namespace FrontierMonkeys.entities {
         private Vector2 _playerOrigin;
         private Vector2 _reticleOrigin;
         private bool _drawReticle = false;
+        private List<Projectile> _projectiles;
 
         public Player(Game game)//, InputHandler input)
             : base() {
@@ -39,6 +40,7 @@ namespace FrontierMonkeys.entities {
 
             _playerOrigin = new Vector2(PlayerTexture.Width / 2, PlayerTexture.Height / 2);
             _reticleOrigin = new Vector2(_reticle.Width / 2, _reticle.Height / 2);
+            _projectiles = new List<Projectile>();
         }
 
 
@@ -57,14 +59,14 @@ namespace FrontierMonkeys.entities {
             if (_drawReticle) {
                 HandleKeyboardInput(keyboardState);
                 HandleMouseInput(mouseState);
-                
+
             } else {
                 HandleGamepadInput(gamePadState);
             }
 
             // certify that the user is within bounds
             Position.X = MathHelper.Clamp(Position.X, _playerOrigin.X, game.GraphicsDevice.Viewport.Width - _playerOrigin.X);
-            Position.Y = MathHelper.Clamp(Position.Y, _playerOrigin.Y,  game.GraphicsDevice.Viewport.Height - _playerOrigin.Y);
+            Position.Y = MathHelper.Clamp(Position.Y, _playerOrigin.Y, game.GraphicsDevice.Viewport.Height - _playerOrigin.Y);
         }
 
 
@@ -78,6 +80,10 @@ namespace FrontierMonkeys.entities {
             float xDistance = _mousePosition.X - (Position.X);// + (PlayerTexture.Width / 2));
             float yDistance = _mousePosition.Y - (Position.Y);// - (PlayerTexture.Height / 2));
             _rotationAngle = (float)Math.PI / 2 + (float)Math.Atan2(yDistance, xDistance);
+
+            if (mouseState.LeftButton == ButtonState.Pressed) {
+                _projectiles.Add(new Projectile(game.GraphicsDevice.Viewport, game.Content.Load<Texture2D>("shot"), Position, _rotationAngle));
+            }
         }
 
 
@@ -110,7 +116,7 @@ namespace FrontierMonkeys.entities {
         /// <param name="gamePadState">The GamePadState that contains the input information</param>
         private void HandleGamepadInput(GamePadState gamePadState) {
             // look at the DPad
-            if (gamePadState.DPad.Left == ButtonState.Pressed) ) {
+            if (gamePadState.DPad.Left == ButtonState.Pressed) {
                 Position.X -= speed;
             }
 
@@ -118,7 +124,7 @@ namespace FrontierMonkeys.entities {
                 Position.X += speed;
             }
 
-            if (gamePadState.DPad.Up == ButtonState.Pressed ) {
+            if (gamePadState.DPad.Up == ButtonState.Pressed) {
                 Position.Y -= speed;
             }
 
@@ -138,6 +144,10 @@ namespace FrontierMonkeys.entities {
             var rightStick = gamePadState.ThumbSticks.Right;
             if (rightStick.Length() != 0.0f)
                 _rotationAngle = (float)Math.Atan2(rightStick.X, rightStick.Y);
+
+            if (gamePadState.IsButtonDown(Buttons.RightTrigger)) {
+                _projectiles.Add(new Projectile(game.GraphicsDevice.Viewport, game.Content.Load<Texture2D>("shot"), Position, _rotationAngle));
+            }
         }
 
 
@@ -151,42 +161,22 @@ namespace FrontierMonkeys.entities {
             GamePadState gamePadState,
             MouseState mouseState) {
 
-            // HandleInput(keyboardState, gamePadState, mouseState);
-
-
-            // this.LastPosition = this.Position;
-
-
-            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Left) || input.CurrentKeyboardState.IsKeyDown(Keys.A) || input.CurrentGamePadState.DPad.Left == ButtonState.Pressed) {
-            //    Position.X -= speed;
-            // }
-
-            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Right) || input.CurrentKeyboardState.IsKeyDown(Keys.D) || input.CurrentGamePadState.DPad.Right == ButtonState.Pressed) {
-            //    Position.X += speed;
-            // }
-            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Up) || input.CurrentKeyboardState.IsKeyDown(Keys.W) || input.CurrentGamePadState.DPad.Up == ButtonState.Pressed) {
-            //     Position.Y -= speed;
-            // }
-            // if (input.CurrentKeyboardState.IsKeyDown(Keys.Down) || input.CurrentKeyboardState.IsKeyDown(Keys.S) || input.CurrentGamePadState.DPad.Down == ButtonState.Pressed) {
-            //     Position.Y += speed;
-            // }
-
-            // _mousePosition.X = input.CurrentMouseState.X;
-            // _mousePosition.Y = input.CurrentMouseState.Y;
-            ////this.Position.X = input.CurrentMouseState.X;
-            ////this.Position.Y = input.CurrentMouseState.Y;
-
-            // //certify that the user is within bounds
-            // Position.X = MathHelper.Clamp(Position.X, 0, game.GraphicsDevice.Viewport.Width - Width);
-            // Position.Y = MathHelper.Clamp(Position.Y, 0, game.GraphicsDevice.Viewport.Height - Height);
+            _projectiles.RemoveAll(x => x.isActive == false);
+            foreach (Projectile projectile in _projectiles) {
+                projectile.Update(gameTime);
+            }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch) {
             //spriteBatch.Draw(PlayerTexture, Position, Color.White);
             spriteBatch.Draw(PlayerTexture, Position, null, Color.White, _rotationAngle, _playerOrigin, 1.0f, SpriteEffects.None, 0);
 
             if (_drawReticle)
                 spriteBatch.Draw(_reticle, _mousePosition, null, Color.White, 0, _reticleOrigin, 1.0f, SpriteEffects.None, 0);
+
+            foreach (Projectile projectile in _projectiles) {
+                projectile.Draw(spriteBatch);
+            }
         }
     }
 }

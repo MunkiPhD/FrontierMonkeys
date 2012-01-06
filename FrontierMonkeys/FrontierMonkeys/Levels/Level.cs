@@ -113,7 +113,7 @@ namespace FrontierMonkeys.Levels {
            // foreach (Gem gem in gems)
             //    gem.Draw(gameTime, spriteBatch);
 
-            Player.Draw(gameTime, spriteBatch );
+            Player.Draw(spriteBatch );
 
             //foreach (Enemy enemy in enemies)
             //    enemy.Draw(gameTime, spriteBatch);

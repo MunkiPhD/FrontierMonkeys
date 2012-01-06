@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="entities\Entity.cs" />
     <Compile Include="entities\Player.cs" />
+    <Compile Include="entities\Projectile.cs" />
     <Compile Include="InputHandler.cs" />
     <Compile Include="Levels\Layer.cs" />
     <Compile Include="Levels\Level.cs" />

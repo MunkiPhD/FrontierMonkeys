@@ -268,7 +268,7 @@ namespace FrontierMonkeys {
             //draw all the entities
             foreach (Entity item in entityList) {
                 spriteBatch.Begin();
-                item.Draw(gameTime, spriteBatch);
+                item.Draw(spriteBatch);
                 spriteBatch.End();
             }
 
